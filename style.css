@@ -14,8 +14,6 @@ body {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     width: 100%;
     max-width: 500px;
-    text-align: right;
-    /* For RTL support */
 }
 
 input[type="number"] {
@@ -25,8 +23,7 @@ input[type="number"] {
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
-    text-align: left;
-    /* To keep numbers aligned left */
+    direction: ltr;
 }
 
 label {
