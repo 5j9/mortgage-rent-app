@@ -29,7 +29,6 @@ function getCleanValue(inputString) {
     }
 
     // 2. Remove thousands separators (comma and Persian separator '٬')
-    // NOTE: We must remove commas *before* parsing float.
     cleanString = cleanString.replaceAll(',', '');
     cleanString = cleanString.replaceAll('٬', '');
 
@@ -37,7 +36,6 @@ function getCleanValue(inputString) {
     cleanString = cleanString.replaceAll('٫', '.');
 
     // Convert to float (which natively handles 'e' or 'E' notation like 9e6)
-    // If the string is invalid, it returns NaN, which || 0 converts to 0.
     return parseFloat(cleanString) || 0;
 }
 
@@ -95,12 +93,12 @@ function calculateRent() {
 
     // Base HTML showing intermediate steps (Total Rents)
     const baseResultHTML = `
-        <p>معادل اجاره‌ای رهن سال گذشته (ماهانه) ( ${effectiveRatePercent.toFixed(2)}% سالانه): 
-            <strong>${formatNumber(lastYearMortgageRentEquivalentMonthly)} تومان</strong></p>
-        <p><strong>اجاره کل سال گذشته (ماهانه): 
-            ${formatNumber(lastYearTotalRentMonthly)} تومان</strong> (نقدی ${formatNumber(lastYearRent)} + معادل رهن)</p>
-        <hr>
-    `;
+    <p>معادل اجاره‌ای رهن سال گذشته (ماهانه) ( ${effectiveRatePercent.toFixed(2)}% سالانه): 
+      <strong>${formatNumber(lastYearMortgageRentEquivalentMonthly)}</strong></p>
+    <p><strong>اجاره کل سال گذشته (ماهانه): 
+      ${formatNumber(lastYearTotalRentMonthly)}</strong> (نقدی ${formatNumber(lastYearRent)} + معادل رهن)</p>
+    <hr>
+  `;
 
     // --- Check which mode to calculate: RENT or PERCENTAGE ---
 
@@ -123,12 +121,12 @@ function calculateRent() {
         }
 
         outputResult = baseResultHTML + `
-            <p>معادل اجاره‌ای رهن سال آینده (ماهانه): 
-                <strong>${formatNumber(nextYearMortgageRentEquivalentMonthly)} تومان</strong></p>
-            <p><strong>اجاره کل سال آینده (ماهانه): ${formatNumber(nextYearTotalRentMonthly)} تومان</strong></p>
-            <hr>
-            ${finalResultHTML}
-        `;
+      <p>معادل اجاره‌ای رهن سال آینده (ماهانه): 
+        <strong>${formatNumber(nextYearMortgageRentEquivalentMonthly)}</strong></p>
+      <p><strong>اجاره کل سال آینده (ماهانه): ${formatNumber(nextYearTotalRentMonthly)}</strong></p>
+      <hr>
+      ${finalResultHTML}
+    `;
 
     } else if (isPercentInputEntered) {
         // Case 2: Rent Increase Percentage is entered (Calculate Next Year Rent)
@@ -139,22 +137,22 @@ function calculateRent() {
 
         if (nextYearActualRent >= 0) {
             finalResultHTML = `
-                <p><strong>نتیجه: اجاره نقدی ماهانه سال آینده مورد نیاز: ${formatNumber(nextYearActualRent)} تومان</strong></p>
-            `;
+        <p><strong>نتیجه: اجاره نقدی ماهانه سال آینده مورد نیاز: ${formatNumber(nextYearActualRent)}</strong></p>
+      `;
         } else {
             finalResultHTML = `
-                <p><strong>خطا در محاسبه:</strong> اجاره نقدی ماهانه سال آینده به ${formatNumber(nextYearActualRent)} تومان می‌رسد (منفی).</p>
-                <p>دلیل: کاهش شدید اجاره کل (به دلیل افزایش رهن یا درصد کم افزایش).</p>
-            `;
+        <p><strong>خطا در محاسبه:</strong> اجاره نقدی ماهانه سال آینده به ${formatNumber(nextYearActualRent)} می‌رسد (منفی).</p>
+        <p>دلیل: کاهش شدید اجاره کل (به دلیل افزایش رهن یا درصد کم افزایش).</p>
+      `;
         }
 
         outputResult = baseResultHTML + `
-            <p>معادل اجاره‌ای رهن سال آینده (ماهانه): 
-                <strong>${formatNumber(nextYearMortgageRentEquivalentMonthly)} تومان</strong></p>
-            <p><strong>اجاره کل سال آینده (ماهانه، با ${rentIncreasePercent.toFixed(2)}% افزایش): ${formatNumber(nextYearTotalRentMonthly)} تومان</strong></p>
-            <hr>
-            ${finalResultHTML}
-        `;
+      <p>معادل اجاره‌ای رهن سال آینده (ماهانه): 
+        <strong>${formatNumber(nextYearMortgageRentEquivalentMonthly)}</strong></p>
+      <p><strong>اجاره کل سال آینده (ماهانه، با ${rentIncreasePercent.toFixed(2)}% افزایش): ${formatNumber(nextYearTotalRentMonthly)}</strong></p>
+      <hr>
+      ${finalResultHTML}
+    `;
 
     } else {
         outputResult = 'لطفاً یکی از فیلدهای **اجاره سال آینده** یا **افزایش اجاره** را وارد کنید.';

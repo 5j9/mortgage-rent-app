@@ -2,9 +2,12 @@
 <html lang="fa" dir="rtl">
 
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>محاسبه‌گر رهن و اجاره</title>
+
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -13,33 +16,36 @@
         <h1>محاسبه‌گر رهن و اجاره</h1>
 
         <div id="rentCalculationForm">
-            <label for="lastYearRent">اجاره سال گذشته (تومان):</label>
+            <label for="lastYearRent">اجاره سال گذشته:</label>
             <input type="number" id="lastYearRent" placeholder="مثلاً ۱۰,۰۰۰,۰۰۰" min="0">
 
-            <label for="lastYearMortgage">رهن سال گذشته (تومان):</label>
+            <label for="lastYearMortgage">رهن سال گذشته:</label>
             <input type="number" id="lastYearMortgage" placeholder="مثلاً ۱۰۰,۰۰۰,۰۰۰" min="0">
 
-            <label for="nextYearMortgage">رهن سال آینده (تومان):</label>
+            <label for="nextYearMortgage">رهن سال آینده:</label>
             <input type="number" id="nextYearMortgage" placeholder="مثلاً ۱۰۰,۰۰۰,۰۰۰" min="0">
 
             <label for="effectiveRate">نرخ بهرهٔ مؤثر سالانه (درصد):</label>
             <input type="number" id="effectiveRate" placeholder="مثلاً ۲۰" step="0.01" min="0">
 
+
             <hr>
             <h2>محاسبه</h2>
             <p>یکی از دو فیلد زیر را وارد کنید:</p>
 
-            <label for="nextYearRent">اجاره سال آینده (تومان):</label>
+            <label for="nextYearRent">اجاره سال آینده:</label>
             <input type="number" id="nextYearRent" placeholder="برای محاسبه درصد افزایش" min="0">
 
             <label for="rentIncreasePercent">افزایش اجاره (درصد):</label>
             <input type="number" id="rentIncreasePercent" placeholder="برای محاسبه اجاره سال آینده" step="0.01">
+
 
         </div>
         <div id="resultContainer" class="result">
             <p id="resultText">لطفاً مقادیر مورد نیاز را وارد کنید.</p>
         </div>
     </div>
+
 
     <script src="script.js"></script>
 </body>
