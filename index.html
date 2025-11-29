@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>محاسبه‌گر رهن و اجاره</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>محاسبه‌گر رهن و اجاره</h1>
+
+        <form id="rentCalculationForm">
+            <label for="lastYearRent">اجاره سال گذشته (تومان):</label>
+            <input type="number" id="lastYearRent" placeholder="مثلاً ۵,۰۰۰,۰۰۰" required>
+
+            <label for="lastYearMortgage">رهن سال گذشته (تومان):</label>
+            <input type="number" id="lastYearMortgage" placeholder="مثلاً ۱۰۰,۰۰۰,۰۰۰" required>
+
+            <label for="nextYearMortgage">رهن سال آینده (تومان):</label>
+            <input type="number" id="nextYearMortgage" placeholder="مثلاً ۱۲۰,۰۰۰,۰۰۰" required>
+
+            <label for="effectiveRate">نرخ بهرهٔ مؤثر سالانه (درصد):</label>
+            <input type="number" id="effectiveRate" placeholder="مثلاً ۲۰" step="0.01" required>
+
+            <hr>
+            <h2>محاسبه</h2>
+            <p>یکی از دو فیلد زیر را وارد کنید:</p>
+
+            <label for="nextYearRent">اجاره سال آینده (تومان):</label>
+            <input type="number" id="nextYearRent" placeholder="برای محاسبه درصد افزایش">
+
+            <label for="rentIncreasePercent">افزایش اجاره (درصد):</label>
+            <input type="number" id="rentIncreasePercent" placeholder="برای محاسبه اجاره سال آینده" step="0.01">
+
+            <button type="submit">محاسبه</button>
+        </form>
+
+        <div id="resultContainer" class="result">
+            <p id="resultText"></p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
