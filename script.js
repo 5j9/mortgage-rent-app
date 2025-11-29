@@ -40,14 +40,17 @@ function getCleanValue(inputString) {
 }
 
 /**
- * Helper function to format a number with Persian commas/digits.
+ * Helper function to format a number with Persian commas/digits, 
+ * without unnecessary rounding to integer.
  * @param {number} num - The number to format.
  * @returns {string} The formatted string.
  */
 function formatNumber(num) {
     if (isNaN(num)) return '۰';
-    // Use 'fa-IR' locale for Persian digits and thousand separators
-    return Math.round(num).toLocaleString('fa-IR');
+    return num.toLocaleString('fa-IR', {
+        minimumFractionDigits: 0, // حداقل اعشار (صفر اگر نباشد)
+        maximumFractionDigits: 2 // حداکثر دو رقم اعشار برای دقت نمایش
+    });
 }
 
 /**
