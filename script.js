@@ -1,7 +1,7 @@
 // Get all necessary elements from the DOM
 const formContainer = document.getElementById('rentCalculationForm');
 const resultText = document.getElementById('resultText');
-const inputFields = formContainer.querySelectorAll('input[type="number"]');
+const inputFields = formContainer.querySelectorAll('input[type="text"]');
 
 // Mapping for Persian digits to English digits
 const persianDigits = {
@@ -93,9 +93,9 @@ function calculateRent() {
 
     // Base HTML showing intermediate steps (Total Rents)
     const baseResultHTML = `
-    <p>معادل اجاره‌ای رهن سال گذشته (ماهانه) ( ${effectiveRatePercent.toFixed(2)}% سالانه): 
+    <p>معادل اجاره‌ای رهن سال گذشته: 
       <strong>${formatNumber(lastYearMortgageRentEquivalentMonthly)}</strong></p>
-    <p><strong>اجاره کل سال گذشته (ماهانه): 
+    <p><strong>اجاره کل سال گذشته: 
       ${formatNumber(lastYearTotalRentMonthly)}</strong> (نقدی ${formatNumber(lastYearRent)} + معادل رهن)</p>
     <hr>
   `;
@@ -121,9 +121,9 @@ function calculateRent() {
         }
 
         outputResult = baseResultHTML + `
-      <p>معادل اجاره‌ای رهن سال آینده (ماهانه): 
+      <p>معادل اجاره‌ای رهن سال آینده: 
         <strong>${formatNumber(nextYearMortgageRentEquivalentMonthly)}</strong></p>
-      <p><strong>اجاره کل سال آینده (ماهانه): ${formatNumber(nextYearTotalRentMonthly)}</strong></p>
+      <p><strong>اجاره کل سال آینده: ${formatNumber(nextYearTotalRentMonthly)}</strong></p>
       <hr>
       ${finalResultHTML}
     `;
@@ -137,19 +137,19 @@ function calculateRent() {
 
         if (nextYearActualRent >= 0) {
             finalResultHTML = `
-        <p><strong>نتیجه: اجاره نقدی ماهانه سال آینده مورد نیاز: ${formatNumber(nextYearActualRent)}</strong></p>
+        <p><strong>نتیجه: اجاره نقدی سال آینده مورد نیاز: ${formatNumber(nextYearActualRent)}</strong></p>
       `;
         } else {
             finalResultHTML = `
-        <p><strong>خطا در محاسبه:</strong> اجاره نقدی ماهانه سال آینده به ${formatNumber(nextYearActualRent)} می‌رسد (منفی).</p>
+        <p><strong>خطا در محاسبه:</strong> اجاره نقدی سال آینده به ${formatNumber(nextYearActualRent)} می‌رسد (منفی).</p>
         <p>دلیل: کاهش شدید اجاره کل (به دلیل افزایش رهن یا درصد کم افزایش).</p>
       `;
         }
 
         outputResult = baseResultHTML + `
-      <p>معادل اجاره‌ای رهن سال آینده (ماهانه): 
+      <p>معادل اجاره‌ای رهن سال آینده: 
         <strong>${formatNumber(nextYearMortgageRentEquivalentMonthly)}</strong></p>
-      <p><strong>اجاره کل سال آینده (ماهانه، با ${rentIncreasePercent.toFixed(2)}% افزایش): ${formatNumber(nextYearTotalRentMonthly)}</strong></p>
+      <p><strong>اجاره کل سال آینده (با ${rentIncreasePercent.toFixed(2)}% افزایش): ${formatNumber(nextYearTotalRentMonthly)}</strong></p>
       <hr>
       ${finalResultHTML}
     `;

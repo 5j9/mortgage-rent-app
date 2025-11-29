@@ -2,14 +2,10 @@
 <html lang="fa" dir="rtl">
 
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>محاسبه‌گر رهن و اجاره</title>
-
     <link rel="stylesheet" href="style.css">
-
 
     <link rel="icon"
         href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏠</text></svg>">
@@ -20,36 +16,33 @@
         <h1>محاسبه‌گر رهن و اجاره</h1>
 
         <div id="rentCalculationForm">
-            <label for="lastYearRent">اجاره سال گذشته:</label>
-            <input type="number" id="lastYearRent" placeholder="مثلاً ۱۰,۰۰۰,۰۰۰" min="0">
+            <label for="lastYearRent">اجاره سال گذشته (ماهانه):</label>
+            <input type="text" id="lastYearRent" placeholder="مثلاً ۱۰,۰۰۰,۰۰۰" min="0">
 
             <label for="lastYearMortgage">رهن سال گذشته:</label>
-            <input type="number" id="lastYearMortgage" placeholder="مثلاً ۱۰۰,۰۰۰,۰۰۰" min="0">
+            <input type="text" id="lastYearMortgage" placeholder="مثلاً ۱۰۰,۰۰۰,۰۰۰" min="0">
 
             <label for="nextYearMortgage">رهن سال آینده:</label>
-            <input type="number" id="nextYearMortgage" placeholder="مثلاً ۱۰۰,۰۰۰,۰۰۰" min="0">
+            <input type="text" id="nextYearMortgage" placeholder="مثلاً ۱۰۰,۰۰۰,۰۰۰" min="0">
 
             <label for="effectiveRate">نرخ بهرهٔ مؤثر سالانه (درصد):</label>
-            <input type="number" id="effectiveRate" placeholder="مثلاً ۲۰" step="0.01" min="0">
-
+            <input type="text" id="effectiveRate" placeholder="مثلاً ۲۰" step="0.01" min="0">
 
             <hr>
             <h2>محاسبه</h2>
             <p>یکی از دو فیلد زیر را وارد کنید:</p>
 
-            <label for="nextYearRent">اجاره سال آینده:</label>
-            <input type="number" id="nextYearRent" placeholder="برای محاسبه درصد افزایش" min="0">
+            <label for="nextYearRent">اجاره سال آینده (ماهانه):</label>
+            <input type="text" id="nextYearRent" placeholder="برای محاسبه درصد افزایش" min="0">
 
             <label for="rentIncreasePercent">افزایش اجاره (درصد):</label>
-            <input type="number" id="rentIncreasePercent" placeholder="برای محاسبه اجاره سال آینده" step="0.01">
-
+            <input type="text" id="rentIncreasePercent" placeholder="برای محاسبه اجاره سال آینده" step="0.01">
 
         </div>
         <div id="resultContainer" class="result">
             <p id="resultText">لطفاً مقادیر مورد نیاز را وارد کنید.</p>
         </div>
     </div>
-
 
     <script src="script.js"></script>
 </body>

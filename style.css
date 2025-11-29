@@ -16,7 +16,8 @@ body {
     max-width: 500px;
 }
 
-input[type="number"] {
+input[type="number"],
+input[type="text"] {
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
@@ -24,6 +25,7 @@ input[type="number"] {
     border-radius: 4px;
     box-sizing: border-box;
     direction: ltr;
+    /* Keeps numbers aligned left */
 }
 
 label {
