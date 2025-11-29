@@ -1,7 +1,6 @@
 // Get all necessary elements from the DOM
 const formContainer = document.getElementById('rentCalculationForm');
 const resultText = document.getElementById('resultText');
-// Select all number inputs for real-time calculation
 const inputFields = formContainer.querySelectorAll('input[type="number"]');
 
 /**
@@ -20,6 +19,7 @@ function formatNumber(num) {
  */
 function calculateRent() {
     // Get raw input values
+    // All Rent inputs are assumed to be MONTHLY (ماهانه)
     const lastYearRent = parseFloat(document.getElementById('lastYearRent').value) || 0;
     const lastYearMortgage = parseFloat(document.getElementById('lastYearMortgage').value) || 0;
     const nextYearMortgage = parseFloat(document.getElementById('nextYearMortgage').value) || 0;
@@ -41,28 +41,32 @@ function calculateRent() {
     // Convert effective rate from percentage to decimal (e.g., 37 -> 0.37)
     const effectiveRate = effectiveRatePercent / 100;
 
-    // 1. Calculate the rental equivalent of the mortgage for both years
-    // Rent equivalent = Mortgage * EAR
-    const lastYearMortgageRentEquivalent = lastYearMortgage * effectiveRate;
-    const nextYearMortgageRentEquivalent = nextYearMortgage * effectiveRate;
+    // *** NEW LOGIC: Calculate the MONTHLY equivalent rent factor ***
+    // The annual mortgage equivalent rent (Mortgage * EAR) is divided by 12 months.
+    const monthlyRateFactor = effectiveRate / 12;
 
-    // 2. Calculate the "Total Rent" for last year
-    const lastYearTotalRent = lastYearRent + lastYearMortgageRentEquivalent;
-    let nextYearTotalRent = 0;
+    // 1. Calculate the MONTHLY rental equivalent of the mortgage for both years
+    // Monthly Rent equivalent = Mortgage * (EAR / 12)
+    const lastYearMortgageRentEquivalentMonthly = lastYearMortgage * monthlyRateFactor;
+    const nextYearMortgageRentEquivalentMonthly = nextYearMortgage * monthlyRateFactor;
+
+    // 2. Calculate the "Total Rent" (Monthly) for last year
+    // Total Rent Monthly = Actual Monthly Rent + Monthly Mortgage Equivalent Rent
+    const lastYearTotalRentMonthly = lastYearRent + lastYearMortgageRentEquivalentMonthly;
+    let nextYearTotalRentMonthly = 0;
     let finalResultHTML = ''; // Holds the final calculation result
 
     // Base HTML showing intermediate steps (Total Rents)
     const baseResultHTML = `
-        <p>معادل اجاره‌ای رهن سال گذشته ( ${effectiveRatePercent.toFixed(2)}% از ${formatNumber(lastYearMortgage)}): 
-            <strong>${formatNumber(lastYearMortgageRentEquivalent)} تومان</strong></p>
-        <p><strong>اجاره کل سال گذشته: 
-            ${formatNumber(lastYearTotalRent)} تومان</strong> (نقدی ${formatNumber(lastYearRent)} + معادل رهن)</p>
+        <p>معادل اجاره‌ای رهن سال گذشته (ماهانه) ( ${effectiveRatePercent.toFixed(2)}% سالانه): 
+            <strong>${formatNumber(lastYearMortgageRentEquivalentMonthly)} تومان</strong></p>
+        <p><strong>اجاره کل سال گذشته (ماهانه): 
+            ${formatNumber(lastYearTotalRentMonthly)} تومان</strong> (نقدی ${formatNumber(lastYearRent)} + معادل رهن)</p>
         <hr>
     `;
 
     // --- Check which mode to calculate: RENT or PERCENTAGE ---
 
-    // Check if both or neither secondary inputs are entered
     const isRentInputEntered = nextYearRentInput.length > 0;
     const isPercentInputEntered = rentIncreasePercentInput.length > 0;
 
@@ -70,14 +74,15 @@ function calculateRent() {
         outputResult = 'خطا: لطفاً **فقط** یکی از فیلدهای "اجاره سال آینده" یا "افزایش اجاره" را وارد کنید.';
     } else if (isRentInputEntered) {
         // Case 1: Next Year Rent is entered (Calculate Rent Increase Percentage)
+        // nextYearRent is the actual MONTHLY rent
         const nextYearRent = parseFloat(nextYearRentInput);
 
-        // Calculate Next Year's Total Rent
-        nextYearTotalRent = nextYearRent + nextYearMortgageRentEquivalent;
+        // Calculate Next Year's Total Rent (Monthly)
+        nextYearTotalRentMonthly = nextYearRent + nextYearMortgageRentEquivalentMonthly;
 
         // Calculate Total Rent Increase Percentage
-        if (lastYearTotalRent > 0) {
-            const totalRentIncreaseRatio = (nextYearTotalRent - lastYearTotalRent) / lastYearTotalRent;
+        if (lastYearTotalRentMonthly > 0) {
+            const totalRentIncreaseRatio = (nextYearTotalRentMonthly - lastYearTotalRentMonthly) / lastYearTotalRentMonthly;
             const totalRentIncreasePercent = totalRentIncreaseRatio * 100;
 
             finalResultHTML = `
@@ -88,9 +93,9 @@ function calculateRent() {
         }
 
         outputResult = baseResultHTML + `
-            <p>معادل اجاره‌ای رهن سال آینده ( ${effectiveRatePercent.toFixed(2)}% از ${formatNumber(nextYearMortgage)}): 
-                <strong>${formatNumber(nextYearMortgageRentEquivalent)} تومان</strong></p>
-            <p><strong>اجاره کل سال آینده: ${formatNumber(nextYearTotalRent)} تومان</strong></p>
+            <p>معادل اجاره‌ای رهن سال آینده (ماهانه): 
+                <strong>${formatNumber(nextYearMortgageRentEquivalentMonthly)} تومان</strong></p>
+            <p><strong>اجاره کل سال آینده (ماهانه): ${formatNumber(nextYearTotalRentMonthly)} تومان</strong></p>
             <hr>
             ${finalResultHTML}
         `;
@@ -99,29 +104,30 @@ function calculateRent() {
         // Case 2: Rent Increase Percentage is entered (Calculate Next Year Rent)
         const rentIncreasePercent = parseFloat(rentIncreasePercentInput);
 
-        // Calculate Next Year's Total Rent based on the desired increase percentage
+        // Calculate Next Year's Total Rent (Monthly) based on the desired increase percentage
         const rentIncreaseRatio = rentIncreasePercent / 100;
-        nextYearTotalRent = lastYearTotalRent * (1 + rentIncreaseRatio);
+        nextYearTotalRentMonthly = lastYearTotalRentMonthly * (1 + rentIncreaseRatio);
 
-        // Calculate the Next Year's Actual Rent
-        const nextYearRent = nextYearTotalRent - nextYearMortgageRentEquivalent;
+        // Calculate the Next Year's Actual Monthly Rent
+        // Actual Monthly Rent = Total Monthly Rent - Next Year Monthly Mortgage Equivalent Rent
+        const nextYearRent = nextYearTotalRentMonthly - nextYearMortgageRentEquivalentMonthly;
 
-        // Check for error case (as you experienced)
+        // Check for error case (Negative Actual Rent)
         if (nextYearRent >= 0) {
             finalResultHTML = `
-                <p><strong>نتیجه: اجاره نقدی سال آینده مورد نیاز: ${formatNumber(nextYearRent)} تومان</strong></p>
+                <p><strong>نتیجه: اجاره نقدی ماهانه سال آینده مورد نیاز: ${formatNumber(nextYearRent)} تومان</strong></p>
             `;
         } else {
             finalResultHTML = `
-                <p><strong>خطا در محاسبه:</strong> اجاره نقدی سال آینده به ${formatNumber(nextYearRent)} تومان می‌رسد (منفی).</p>
-                <p>دلیل: افزایش رهن ( ${formatNumber(nextYearMortgage - lastYearMortgage)} تومان) بیش از حد زیاد است یا درصد افزایش کل کم است.</p>
+                <p><strong>خطا در محاسبه:</strong> اجاره نقدی ماهانه سال آینده به ${formatNumber(nextYearRent)} تومان می‌رسد (منفی).</p>
+                <p>دلیل: کاهش شدید اجاره کل (به دلیل افزایش رهن یا درصد کم افزایش).</p>
             `;
         }
 
         outputResult = baseResultHTML + `
-            <p>معادل اجاره‌ای رهن سال آینده ( ${effectiveRatePercent.toFixed(2)}% از ${formatNumber(nextYearMortgage)}): 
-                <strong>${formatNumber(nextYearMortgageRentEquivalent)} تومان</strong></p>
-            <p><strong>اجاره کل سال آینده (با ${rentIncreasePercent.toFixed(2)}% افزایش): ${formatNumber(nextYearTotalRent)} تومان</strong></p>
+            <p>معادل اجاره‌ای رهن سال آینده (ماهانه): 
+                <strong>${formatNumber(nextYearMortgageRentEquivalentMonthly)} تومان</strong></p>
+            <p><strong>اجاره کل سال آینده (ماهانه، با ${rentIncreasePercent.toFixed(2)}% افزایش): ${formatNumber(nextYearTotalRentMonthly)} تومان</strong></p>
             <hr>
             ${finalResultHTML}
         `;
